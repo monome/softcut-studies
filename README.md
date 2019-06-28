@@ -13,9 +13,9 @@ for an introduction to scripting see the norns [studies](https://monome.org/docs
 first, some nomenclature:
 
 - _voice_ --- a play/record head. mono. each has its own parameters (ie rate, level, etc). there are 6 voices.
-- _buffer_ --- digital tape, there are 2 buffers. mono. just about 5 minutes each [(currently)](https://github.com/monome/norns/blob/master/crone/src/SoftCutClient.h#L19).
+- _buffer_ --- digital tape, there are 2 buffers. mono. just about 5 minutes each.
 
-softcut parameters are reset when a script is loaded. to get a looping sound we need at a minimum the following:
+softcut parameters are reset when a script is loaded. to get a looping sound we need at a minimum the following, where the arguments are `(voice, value)`:
 
 ```
 softcut.enable(1,1)
@@ -28,9 +28,7 @@ softcut.position(1,1)
 softcut.play(1,1)
 ```
 
-these commands all have similar arguments: `(voice, value)`. ie, `softcut.level(1,1.0)` sets voice 1 to level 1.0.
-
-the buffers, however, are blank. load a file (wav/aif/etc):
+the buffers are blank. load a file (wav/aif/etc):
 
 ```
 softcut.buffer_read_mono(file, start_src, start_dst, dur, ch_src, ch_dst)
@@ -41,7 +39,7 @@ softcut.buffer_read_mono(file, start_src, start_dst, dur, ch_src, ch_dst)
 - `start_dst` --- start of buffer to write into (seconds)
 - `dur` --- how much to read/write (seconds, use `-1` for entire file)
 - `ch_src` --- which channel in file to read
-- `ch_dst` --- which buffer to write (note, bugfix: this is 0-indexed currently)
+- `ch_dst` --- which buffer to write
 
 
 ## 2. more voices and parameters
