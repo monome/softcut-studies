@@ -13,7 +13,7 @@ function init()
   softcut.buffer_clear()
   -- read file into buffer
   -- buffer_read_mono (file, start_src, start_dst, dur, ch_src, ch_dst)
-  softcut.buffer_read_mono(_path.dust..file,0,1,-1,0,0)
+  softcut.buffer_read_mono(_path.dust..file,0,1,-1,0,0) --FIXME: ch is 0-indexed
   
   -- enable voice 1
   softcut.enable(1,1)
@@ -49,7 +49,6 @@ end
 
 function key(n,z)
   if n==3 and z==1 then
-    -- set voice 1 position
     softcut.position(1,1)
   end
 end
@@ -74,7 +73,7 @@ end
 
 function print_info(file)
   if util.file_exists(_path.dust..file) == true then
-    local ch, samples, samplerate = audio.file_info(file) -- audio.file_info uses audio path???
+    local ch, samples, samplerate = audio.file_info(file) -- FIXME: audio.file_info uses audio path???
     local duration = samples/samplerate
     print("loading file: "..file)
     print("  channels:\t"..ch)
