@@ -44,7 +44,17 @@ softcut.buffer_read_mono(file, start_src, start_dst, dur, ch_src, ch_dst)
 
 ## 2. multivoice and more parameters
 
+* see/run softcut-studies/2-multi [(source)](https://github.com/monome/softcut-studies/blob/master/2-multi.lua)
 
+![](https://raw.githubusercontent.com/monome/softcut-studies/master/lib/2-multi.png)
+
+enable more voices, then set their parameters using the first argument in the various param functions. here are a few more playback parameters:
+
+```
+softcut.pan(voice,position)
+softcut.level_slew_time(voice,time)
+softcut.rate_slew_time(voice,time)
+```
 
 ## 3. cut and poll
 ...
