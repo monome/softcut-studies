@@ -57,7 +57,34 @@ softcut.rate_slew_time(voice,time)
 ```
 
 ## 3. cut and poll
-...
+* see/run softcut-studies/3-cut [(source)](https://github.com/monome/softcut-studies/blob/master/3-cut.lua)
+
+![](https://raw.githubusercontent.com/monome/softcut-studies/master/lib/3-cut.png)
+
+softcut cross-fades nicely when cutting to a new position and looping. specify the fade time:
+
+```
+softcut.fade_time(voice,time)
+```
+
+we can read the playback position of a voice by setting up a poll.
+
+```
+function update_positions(voice,position)
+  print(voice,position)
+end
+```
+
+and then inside `init()`:
+
+```
+softcut.phase_quant(voice,time)
+softcut.event_phase(update_positions)
+softcut.poll_start_phase()
+```
+
+`phase_quant` specifies the time quantum of reporting. for example, if voice 1 is set to 0.5, softcut will call the `update_positions` function when the playback crosses a multiple of 0.5.
+
 
 ## 4. record and overdub
 

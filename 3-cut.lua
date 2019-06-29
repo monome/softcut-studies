@@ -14,7 +14,7 @@ m.event = function()
   end
 end
 
-function places(i,pos)
+function update_positions(i,pos)
   positions[i] = pos - 1
   redraw()
 end
@@ -35,10 +35,10 @@ function init()
     softcut.position(i,1)
     softcut.play(i,1)
     softcut.fade_time(i,fade_time)
-    softcut.event_phase(places)
     softcut.phase_quant(i,0.125)
   end
 
+  softcut.event_phase(update_positions)
   softcut.poll_start_phase()
 
   m:start()
