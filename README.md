@@ -42,15 +42,22 @@ softcut.buffer_read_mono(file, start_src, start_dst, dur, ch_src, ch_dst)
 - `ch_dst` --- which buffer to write
 
 
-## 2. more voices and parameters
+## 2. multivoice and more parameters
+
+
+
+## 3. cut and poll
+...
+
+## 4. record and overdub
 
 ...
 
-## 3. record and overdub
+## 5. routing
 
 ...
 
-## 4. routing
+## 6. files
 
 ...
 
