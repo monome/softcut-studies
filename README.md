@@ -98,6 +98,14 @@ softcut.poll_start_phase()
 
 ...
 
+## 7. files
+
+...
+
+## 8. design patterns
+
+...
+
 ---
 
 ## reference
