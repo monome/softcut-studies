@@ -88,13 +88,37 @@ softcut.poll_start_phase()
 
 ## 4. record and overdub
 
-...
+* see/run softcut-studies/4-recdub [(source)](https://github.com/monome/softcut-studies/blob/master/4-recdub.lua)
+
+![](https://raw.githubusercontent.com/monome/softcut-studies/master/lib/4-recdub.png)
+
+first activate record mode for voice 1:
+
+```
+softcut.rec(1,1)
+```
+
+then set up the input source. first we route audio input to softcut, and then set unity levels for each input channel on voice 1:
+
+```
+audio.level_adc_cut(1)
+softcut.level_input_cut(1,1,1.0)
+softcut.level_input_cut(2,1,1.0)
+```
+
+finally, set the `rec` and `pre` levels.
+
+- `rec`: how much of the input gets recorded to the buffer
+- `pre`: how much of the pre-existing material stays in the buffer
+
+so, full overdub would have both levels set to `1.0`. just playback would have `rec` set at `0.0`and `pre` at `1.0`. an echo effect can be easily created by setting middle ranges to each.
+
 
 ## 5. routing
 
 ...
 
-## 6. files
+## 6. filters
 
 ...
 
