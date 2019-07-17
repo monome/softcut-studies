@@ -1,5 +1,6 @@
 -- softcut study 4
 -- record and overdub
+-- audio input required
 --
 -- E1 rate
 -- E2 rec level
@@ -25,14 +26,15 @@ function init()
   softcut.position(1,1)
   softcut.play(1,1)
 
+  -- set input rec level: input channel, voice, level
+  softcut.level_input_cut(1,1,1.0)
+  softcut.level_input_cut(2,1,1.0)
   -- set voice 1 record level 
   softcut.rec_level(1,rec)
   -- set voice 1 pre level
   softcut.pre_level(1,pre)
   -- set record state of voice 1 to 1
   softcut.rec(1,1)
-  -- set input rec level: input channel, voice, level
-  softcut.level_input_cut(1,1,1.0)
 end
 
 function enc(n,d)
