@@ -1,4 +1,8 @@
--- softcut study 2
+-- softcut study 2: multi
+--
+-- E2 rate slew
+-- E3 level slew
+-- K3 randomize rates/levels
 
 file = "audio/common/waves/01.wav"
 rate_slew = 0.1

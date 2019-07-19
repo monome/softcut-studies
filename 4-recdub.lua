@@ -1,5 +1,4 @@
--- softcut study 4
--- record and overdub
+-- softcut study 4: rec and dub
 -- audio input required
 --
 -- E1 rate

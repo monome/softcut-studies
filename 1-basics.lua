@@ -1,6 +1,10 @@
--- softcut study 1
+-- softcut study 1: basics
+--
+-- E1 rate
+-- E2 loop start
+-- E3 loop end
 
-file = "audio/common/waves/01.wav"
+file = "/home/we/dust/code/softcut-studies/lib/whirl1.aif"
 rate = 1.0
 loop_start = 1.0
 loop_end = 2.0
@@ -13,7 +17,7 @@ function init()
   softcut.buffer_clear()
   -- read file into buffer
   -- buffer_read_mono (file, start_src, start_dst, dur, ch_src, ch_dst)
-  softcut.buffer_read_mono(_path.dust..file,0,1,-1,1,1)
+  softcut.buffer_read_mono(file,0,1,-1,1,1)
   
   -- enable voice 1
   softcut.enable(1,1)

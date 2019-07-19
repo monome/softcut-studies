@@ -1,4 +1,7 @@
--- softcut study 3
+-- softcut study 3: cut
+-- 
+-- E2 fade time
+-- E3 metro time (random cut)
 
 file = "/home/we/dust/code/softcut-studies/lib/whirl1.aif"
 fade_time = 0.01
