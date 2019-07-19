@@ -13,7 +13,7 @@ function init()
   softcut.buffer_clear()
   -- read file into buffer
   -- buffer_read_mono (file, start_src, start_dst, dur, ch_src, ch_dst)
-  softcut.buffer_read_mono(_path.dust..file,0,1,-1,0,0) --FIXME: ch is 0-indexed
+  softcut.buffer_read_mono(_path.dust..file,0,1,-1,1,1)
   
   -- enable voice 1
   softcut.enable(1,1)
@@ -29,6 +29,8 @@ function init()
   softcut.loop_end(1,2)
   -- set voice 1 position to 1
   softcut.position(1,1)
+  -- set voice 1 rate to 1.0
+  softcut.rate(1,1.0)
   -- enable voice 1 play
   softcut.play(1,1)
 end
@@ -45,12 +47,6 @@ function enc(n,d)
     softcut.loop_end(1,loop_end)
   end
   redraw()
-end
-
-function key(n,z)
-  if n==3 and z==1 then
-    softcut.position(1,1)
-  end
 end
 
 function redraw()
