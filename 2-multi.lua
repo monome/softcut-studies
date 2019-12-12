@@ -4,13 +4,13 @@
 -- E3 level slew
 -- K3 randomize rates/levels
 
-file = "audio/common/waves/01.wav"
+file = _path.dust.."audio/common/waves/01.wav"
 rate_slew = 0.1
 level_slew = 2.0
 
 function init()
   softcut.buffer_clear()
-  softcut.buffer_read_mono(_path.dust..file,0,1,-1,0,0) --FIXME: ch is 0-indexed
+  softcut.buffer_read_mono(file,0,1,-1,0,0) --FIXME: ch is 0-indexed
 
   for i=1,6 do
     softcut.enable(i,1)
@@ -32,7 +32,7 @@ end
 function randomize_all()
   for i=1,6 do
     softcut.level(i,math.random()*0.5+0.2)
-    softcut.pan(i,math.random())
+    softcut.pan(i,0.5-math.random())
     softcut.rate(i,2^(math.random(10)/2-4))
   end
 end
