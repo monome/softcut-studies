@@ -8,15 +8,21 @@
 
 file = _path.dust.."code/softcut-studies/lib/whirl1.aif"
 
-jumpy = 0.5
 feed = 1.0
 preserve = 0.25
+
+positions = {0,0}
 
 m = metro.init()
 m.time = 0.5
 m.event = function()
-  m.time = 0.1+math.random()*jumpy
+  m.time = 0.1+math.random()
   softcut.position(2,1+math.random()*4)
+end
+
+function update_positions(i,pos)
+  positions[i] = pos - 1
+  redraw()
 end
 
 function init()
@@ -50,14 +56,18 @@ function init()
   softcut.rec_level(2,0.75)
   softcut.pre_level(2,0.25)
   softcut.level(2,0)
+  softcut.fade_time(2,0.02)
+
+  softcut.phase_quant(1,0.025)
+  softcut.phase_quant(2,0.025)
+  softcut.event_phase(update_positions)
+  softcut.poll_start_phase()
 
   m:start()
 end
 
 function enc(n,d)
-  if n==1 then
-    jumpy = util.clamp(jumpy+d/20,0.5,2)
-  elseif n==2 then
+  if n==2 then
     feed = util.clamp(feed+d/20,0,1)
     softcut.level_cut_cut(1,2,feed)
   elseif n==3 then
@@ -78,10 +88,11 @@ end
 
 function redraw()
   screen.clear()
-  screen.move(10,30)
-  screen.text("jumpy: ")
-  screen.move(118,30)
-  screen.text_right(string.format("%.2f",jumpy))
+  screen.move(10,20)
+  screen.line_rel(positions[1]*28,0)
+  screen.move(10,24)
+  screen.line_rel(positions[2]*28,0)
+  screen.stroke()
   screen.move(10,40)
   screen.text("feed: ")
   screen.move(118,40)
