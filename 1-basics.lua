@@ -4,7 +4,7 @@
 -- E2 loop start
 -- E3 loop end
 
-file = "/home/we/dust/code/softcut-studies/lib/whirl1.aif"
+file = _path.dust.."code/softcut-studies/lib/whirl1.aif"
 rate = 1.0
 loop_start = 1.0
 loop_end = 2.0
@@ -72,7 +72,7 @@ end
 
 
 function print_info(file)
-  if util.file_exists(_path.dust..file) == true then
+  if util.file_exists(file) == true then
     local ch, samples, samplerate = audio.file_info(file) -- FIXME: audio.file_info uses audio path???
     local duration = samples/samplerate
     print("loading file: "..file)
