@@ -114,11 +114,36 @@ finally, set the `rec` and `pre` levels.
 so, full overdub would have both levels set to `1.0`. just playback would have `rec` set at `0.0`and `pre` at `1.0`. an echo effect can be easily created by setting middle ranges to each.
 
 
-## 5. routing
+## 5. filters
 
-...
+* see/run softcut-studies/5-filters [(source)](https://github.com/monome/softcut-studies/blob/master/5-filters.lua)
 
-## 6. filters
+![](https://raw.githubusercontent.com/monome/softcut-studies/master/lib/5-filters.png)
+
+softcut can apply filtering pre-record and post-playback.
+
+```
+softcut.pre_filter_dry(voice,value)
+softcut.pre_filter_lp(voice,value)
+softcut.pre_filter_hp(voice,value)
+softcut.pre_filter_bp(voice,value)
+softcut.pre_filter_br(voice,value)
+```
+
+both are state variable filters with all taps available, so you can freely mix the outputs of dry, low pass, high pass, band pass, and band reject.
+
+to set the filter cutoff and q values:
+
+```
+softcut.pre_filter_fc(voice,value)
+softcut.pre_filter_rq(voice,value)
+```
+
+`post` filters are the same. just replace `pre` with `post` in the command set.
+
+
+
+## 6. routing
 
 ...
 
@@ -126,9 +151,6 @@ so, full overdub would have both levels set to `1.0`. just playback would have `
 
 ...
 
-## 8. design patterns
-
-...
 
 ---
 
