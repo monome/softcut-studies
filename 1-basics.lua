@@ -73,7 +73,7 @@ end
 
 function print_info(file)
   if util.file_exists(file) == true then
-    local ch, samples, samplerate = audio.file_info(file) -- FIXME: audio.file_info uses audio path???
+    local ch, samples, samplerate = audio.file_info(file)
     local duration = samples/samplerate
     print("loading file: "..file)
     print("  channels:\t"..ch)
