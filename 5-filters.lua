@@ -6,7 +6,7 @@
 -- E2 low pass freq voice 1
 -- E3 band pass freq voice 2
 
-file = "/home/we/dust/code/softcut-studies/lib/whirl1.aif"
+file = _path.dust.."/code/softcut-studies/lib/whirl1.aif"
 rate = 1.0
 low = 15000
 band = 2000
