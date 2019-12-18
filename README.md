@@ -183,8 +183,20 @@ the example script uses two voices. the first just plays a loop. the second jump
 
 ## 7. files
 
-...
+* see/run softcut-studies/7-files [(source)](https://github.com/monome/softcut-studies/blob/master/7-files.lua)
 
+![](https://raw.githubusercontent.com/monome/softcut-studies/master/lib/7-files.png)
+
+softcut reads files to buffers and writes buffers to files, in mono and stereo.
+
+```
+softcut.buffer_read_mono (file, start_src, start_dst, dur, ch_src, ch_dst)
+softcut.buffer_read_stereo (file, start_src, start_dst, dur)
+softcut.buffer_write_mono (file, start, dur, ch)
+softcut.buffer_write_stereo (file, start, dur)
+```
+
+the example script reads a "backing track" clip when K1 is long-pressed. this sets a loop length, and the playback volume can be changed with E1. a second clip is recorded from the audio input, with configurable rec/pre levels with E2/E3 respectively. the recorded clip can be saved at any time with K3, to `dust/audio/` with a `ss7-` prefix along with a random number. this functions as a live "clip grabber" with overdub options.
 
 ---
 
