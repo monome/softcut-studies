@@ -145,6 +145,40 @@ softcut.pre_filter_rq(voice,value)
 
 ## 6. routing
 
+* see/run softcut-studies/6-routing [(source)](https://github.com/monome/softcut-studies/blob/master/6-routing.lua)
+
+![](https://raw.githubusercontent.com/monome/softcut-studies/master/lib/6-routing.png)
+
+the audio routing within softcut is highly configurable.
+
+first we can specify a mix of softcut's input source:
+
+```
+audio.level_adc_cut( level )
+audio.level_eng_cut( level )
+audio.level_tape_cut( level )
+```
+
+then assign input levels per voice:
+
+```
+softcut.level_input_cut( ch, voice, level )
+```
+
+we can also cross-patch the output of voices to the input of other voices:
+
+```
+softcut.level_cut_cut( src, dst, value )
+```
+
+each voice can have a separate level for final output:
+
+```
+softcut.level( voice, value )
+```
+
+the example script uses two voices. the first just plays a loop. the second jumps positions, overdub-recording into the same loop using the first playhead as the input for recording. it's a sort of feedback buffer process that radically restructures sound.
+
 ...
 
 ## 7. files
