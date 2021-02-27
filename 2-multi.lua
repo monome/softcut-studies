@@ -24,9 +24,9 @@ function init()
 
     softcut.rate_slew_time(i,rate_slew)
     softcut.level_slew_time(i,level_slew)
-
-    randomize_all()
   end
+  
+  randomize_all()
 end
 
 function randomize_all()
