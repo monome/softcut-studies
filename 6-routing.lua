@@ -83,7 +83,7 @@ function key(n,z)
   if n==2 and z==1 then
     softcut.buffer_clear()
   elseif n==3 and z==1 then
-    softcut.buffer_read_mono(file,0,1,-1,0,0)
+    softcut.buffer_read_mono(file,0,1,-1,1,1)
   end
 end
 
