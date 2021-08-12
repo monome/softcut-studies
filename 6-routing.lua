@@ -27,7 +27,7 @@ end
 
 function init()
   softcut.buffer_clear()
-  softcut.buffer_read_mono(file,0,1,-1,0,0)
+  softcut.buffer_read_mono(file,0,1,-1,1,1)
 
 	audio.level_adc_cut(1)
 	audio.level_adc_cut(2)
