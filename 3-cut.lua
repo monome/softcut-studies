@@ -24,7 +24,7 @@ end
 
 function init()
   softcut.buffer_clear()
-  softcut.buffer_read_mono(file,0,1,-1,0,0) --FIXME: ch is 0-indexed
+  softcut.buffer_read_mono(file,0,1,-1,1,1)
 
   for i=1,4 do
     softcut.enable(i,1)
