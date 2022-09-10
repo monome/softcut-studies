@@ -4,7 +4,7 @@
 -- E3 level slew
 -- K3 randomize rates/levels
 
-file = _path.dust.."audio/common/waves/01.wav"
+file = _path.dust.."code/softcut-studies/lib/01.wav"
 rate_slew = 0.1
 level_slew = 2.0
 
