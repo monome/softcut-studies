@@ -1,72 +1,38 @@
 -- softcut study 9: query
 --
--- K1 load backing track
+-- K1 load sample
 -- E1 adjust level
 -- K3 microloop
---  E2 adjust loop start
---  E3 adjust loop end
+-- E2 adjust loop start
+-- E3 adjust loop end
+-- while looping:
+--   K2 change rate
+--   (see params)
 
 fileselect = require 'fileselect'
 
-saved = "..."
-level = 1.0
-rec = 1.0
-pre = 1.0
-length = 1
+level = 1
+rec = 1
+pre = 1
+preroll = 1 -- 1 second of preroll
+sample_length = 1
 position = 0
-selecting = false
-selected = false
 micro_start = 0
 micro_end = 0.15
-microloop_length = 0.15
+microloop_length = micro_end - micro_start
+selecting_file = false
+file_selected = false
 waveform_loaded = false
-first_pass = true
+queued_reset = false
 
 screen_dirty = false
 screen_timer = metro.init()
 screen_timer.time = 1/15 -- 15fps
 screen_timer.event = function()
-  if screen_dirty and not selecting then
+  if screen_dirty and not selecting_file then
     redraw()
     screen_dirty = false
   end
-end
-
-function load_file(file)
-  selecting = false
-  if file ~= "cancel" then
-    softcut.buffer_clear() -- clear buffer before loading a file
-    local ch, samples = audio.file_info(file)
-    length = samples/48000
-    for i = 1,2 do
-      softcut.buffer_read_stereo(file,0,1,-1)
-    end
-    update_waveform(1,1,length+1,128)
-    selected = true
-    first_pass = true
-  end
-end
-
-function update_positions(i,pos)
-  position = (pos - 1) / length
-  if selecting == false then screen_dirty = true end
-end
-
-function reset()
-  for i=1,2 do
-    softcut.enable(i,1)
-    softcut.buffer(i,i)
-    softcut.level(i,1.0)
-    softcut.loop(i,1)
-    softcut.loop_start(i,1)
-    softcut.loop_end(i,1+length)
-    softcut.position(i,1)
-    softcut.rate(i,1.0)
-    softcut.play(i,1)
-    softcut.fade_time(i,0.005)
-    softcut.pan(i,i == 1 and -1 or 1)
-  end
-  microloop_length = 0.15
 end
 
 function init()
@@ -83,11 +49,56 @@ function init()
   softcut.level(1,0)
   softcut.level(2,0)
   screen_timer:start()
+
+  params:add_separator('softcut_study_9_separator', 'softcut study 9')
+  params:add_option('play_mode', 'play mode', {'continuous', 'bound by loop'}, 1)
+  params:add_option('playback_rate', 'K2 hold playback rate', {-4,-2,-1,-0.5,0.5,1,2,4}, 3)
+end
+
+function update_positions(i,pos)
+  position = (pos - preroll) / sample_length
+  if selecting_file == false then screen_dirty = true end
+end
+
+function load_file(file)
+  selecting_file = false
+  if file ~= "cancel" then
+    softcut.buffer_clear() -- clear buffer before loading a file
+    local ch, samples = audio.file_info(file)
+    sample_length = samples/48000
+    softcut.buffer_read_stereo(file, 0, preroll, -1)
+    update_waveform(1, 1, sample_length + preroll, 128)
+    queued_reset = true
+    file_selected = true
+  end
+end
+
+function reset()
+  level = 1
+  microloop_length = 0.15
+  for i=1,3 do
+    softcut.enable(i,1)
+    softcut.buffer(i,i)
+    softcut.level(i, i ~= 3 and level or 0)
+    softcut.loop(i,1)
+    softcut.loop_start(i,1)
+    softcut.loop_end(i,preroll + sample_length)
+    softcut.position(i,1)
+    softcut.rate(i,1)
+    softcut.play(i,1)
+    softcut.fade_time(i,0.01)
+    if i ~= 3 then
+      softcut.pan(i,i == 1 and -1 or 1)
+    else
+      softcut.pan(3,0)
+    end
+  end
+  screen_dirty = true
 end
 
 function microloop(i,pos)
-  micro_start = pos - 0.01 -- 10ms allowance for reaction time
-  micro_end = pos + microloop_length
+  micro_start = pos - microloop_length
+  micro_end = pos
   softcut.loop_start(i, micro_start)
   softcut.loop_end(i, micro_end)
   if i == 1 then
@@ -99,7 +110,7 @@ function adjust_bounds(bound, d)
   if bound == 'start' then
     micro_start = util.clamp(micro_start + d/100, 1, micro_end - 0.01)
   else
-    micro_end = util.clamp(micro_end + d/100, micro_start + 0.01, length+1)
+    micro_end = util.clamp(micro_end + d/100, micro_start + 0.01, sample_length + preroll)
   end
   microloop_length = micro_end - micro_start
   if looping then
@@ -113,21 +124,41 @@ end
 
 function key(n,z)
   if n == 1 and z == 1 then
-    selecting = true
+    selecting_file = true
     fileselect.enter(_path.audio,load_file)
-  elseif n == 3 then
-    if z == 1 then
-      looping = true
-      for i = 1,2 do
-        softcut.query_position(i)
+  elseif file_selected then
+    if n == 2 and z == 1 then
+      if looping == true then
+        for i = 1,2 do
+          softcut.rate(i,tonumber(params:string('playback_rate')))
+        end
       end
-    else
-      looping = false
+    elseif n == 2 and z == 0 then
       for i = 1,2 do
-        softcut.loop_start(i,1)
-        softcut.loop_end(i,1+length)
+        softcut.rate(i,1)
       end
-      update_waveform(1,1,length+1,128)
+    elseif n == 3 then
+      if z == 1 then
+        looping = true
+        for i = 1,2 do
+          softcut.query_position(i)
+        end
+      else
+        looping = false
+        for i = 1,2 do
+          softcut.loop_start(i,1)
+          softcut.loop_end(i,1+sample_length)
+          softcut.rate(i,1)
+          if params:string('play_mode') == 'continuous' then
+            softcut.voice_sync(i,3,0)
+          else
+            if i == 2 then
+              softcut.voice_sync(2,1,0)
+            end
+          end
+        end
+        update_waveform(1, 1, sample_length + preroll, 128)
+      end
     end
   end
 end
@@ -156,9 +187,9 @@ function on_render(ch, start, i, s)
   interval = i
   waveform_loaded = true
   screen_dirty = true
-  if first_pass then
+  if queued_reset then
     reset()
-    first_pass = false
+    queued_reset = false
   end
 end
 
@@ -181,21 +212,29 @@ function redraw()
     end
     screen.level(15)
     if looping then
-      screen.move(util.linlin((micro_start-1)/length,(micro_end-1)/length,10,120,position),28)
+      local _min = (micro_start-1)/sample_length
+      local _max = (micro_end-1)/sample_length
+      screen.move(util.linlin(_min, _max, 10, 120, position), 28)
     else
-      screen.move(util.linlin(0,1,10,120,position),28)
+      screen.move(util.linlin(0, 1, 10, 120, position), 28)
     end
     screen.line_rel(0, 25)
     screen.stroke()
+  elseif queued_reset then
+    screen.level(4)
+    screen.move(64,45)
+    screen.text_center('loading...')
   end
   screen.level(15)
   screen.move(10,10)
-  screen.text(saved)
+  screen.text('...')
   screen.move(10,20)
   screen.text("E1: level ")
-  screen.move(118,20)
+  screen.move(118, 20)
   screen.text_right(string.format("%.2f",level))
-  screen.move(10,60)
-  screen.text(micro_start~= 0 and "microloop length: "..util.round(microloop_length,0.001) or "")
+  if micro_start ~= 0 then
+    screen.move(10,60)
+    screen.text("microloop length: "..util.round(microloop_length,0.001))
+  end
   screen.update()
 end
