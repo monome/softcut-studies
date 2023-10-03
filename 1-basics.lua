@@ -4,6 +4,7 @@
 -- E2 loop start
 -- E3 loop end
 
+ -- note: audio files must be 48kHz for accurate playback and looping
 file = _path.dust.."code/softcut-studies/lib/whirl1.aif"
 rate = 1.0
 loop_start = 1.0
