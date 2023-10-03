@@ -13,6 +13,7 @@ length = 1
 position = 1
 selecting = false
 
+-- note: audio files must be 48kHz for accurate playback and looping
 function load_file(file)
   selecting = false
   if file ~= "cancel" then
