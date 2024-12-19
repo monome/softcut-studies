@@ -8,8 +8,13 @@
 
 file = _path.dust.."/code/softcut-studies/lib/whirl1.aif"
 rate = 1.0
-low = 15000
+low = 8000
 band = 2000
+
+-- softcut's pre- and post-filters clamp values below 10Hz and above 12000Hz
+-- here we specify the max and min values for the encoders
+max_freq = 12000
+min_freq = 200
 
 function init()
   audio.level_adc_cut(1)
@@ -63,10 +68,10 @@ function enc(n,d)
     rate = util.clamp(rate+d/100,-4,4)
     softcut.rate(1,rate)
   elseif n==2 then
-    low = util.clamp(low+d*200,200,18000)
+    low = util.clamp(low+d*200,min_freq,max_freq)
     softcut.post_filter_fc(1,low)
   elseif n==3 then
-    band = util.clamp(band+d*1000,200,18000)
+    band = util.clamp(band+d*1000,min_freq,max_freq)
     softcut.pre_filter_fc(2,band)
   end
   redraw()
@@ -88,4 +93,3 @@ function redraw()
   screen.text_right(string.format("%.2f",band))
   screen.update()
 end
-
